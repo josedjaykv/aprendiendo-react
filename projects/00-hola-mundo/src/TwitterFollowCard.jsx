@@ -31,6 +31,7 @@ function TwitterFollowCard ({ children, formatUserName, userName = 'unknown', in
             <aside>
                 <button className={buttonClassName} onClick={handleClick}>
                 {text}
+                <span className='tw-foolowCard-stopFollowing'>Dejar de seguir</span>
                 </button>
             </aside>
 

@@ -68,9 +68,14 @@
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
+  width: 120px;
 }
 
 .tw-followCard-button.is-following:hover {
-  background-color: #1da1f2;
-  transition: .3s ease background-color;
+  background-color: #f21d1dff;
+  transition: .1s ease background-color;
+}
+
+.tw-foolowCard-stopFollowing {
+  display: none;
 }
