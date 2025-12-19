@@ -1,49 +1,45 @@
-import React, { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
 import './App.css'
-import TwitterFollowCard from './TwitterFollowCard.jsx'
+import { TwitterFollowCard } from './TwitterFollowCard'
 
-export function App () {  
-  const format = (userName) => `@${userName}`
-  const pheralb = { isFollowing: false, userName: 'pheralb', formatUserName: format } //Para pasar objetos como props
+export function App (){
+    const format = (userName) => `@${userName}`
 
-  return(
-    <section className='App'>
-      <TwitterFollowCard 
-        formatUserName={format} 
-        userName='midudev'    
-        initialIsFollowing={true}     
-      >
-        Miguel Ángel Durán
-      </TwitterFollowCard>
+    // Ademas de pasar funciones tambien podemos pasar elementos HTML
+    const formattedUserName = <span>@joselito</span>
 
-      { /* Comentarios dentro de return, pero no es recomendado hacerlo */ }
+    const midudev = { name: 'Miguel', formatUserName: format, formattedUserName: formattedUserName }
 
-      <TwitterFollowCard 
-        formatUserName={format}          
-        userName='josedjaykv'         
-      >
-        José David Jayk Vanegas
-      </TwitterFollowCard>
+    const user = [
+        {
+            userName: 'midudev',
+            name: 'Miguel Angel',
+            formattedUserName: formattedUserName,
+            formatUserName: format,
+            isFollowing: false,
+            key: 123
+        },
+        {
+            userName: 'josedjaykv',
+            name: 'Jose David Jayk Vanegas',
+            formattedUserName: formattedUserName,
+            formatUserName: format,
+            isFollowing: true,
+            key: 456
+        }
+    ]
 
-      <TwitterFollowCard 
-        formatUserName={format}          
-        userName='uribe'         
-      >
-        Miguel Ángel Durán
-      </TwitterFollowCard>
-
-      <TwitterFollowCard 
-        formatUserName={format}        
-      >
-        Miguel Ángel Durán
-      </TwitterFollowCard>
-
-      <TwitterFollowCard {...pheralb} >
-        Miguel Ángel Durán
-      </TwitterFollowCard>
-
-    </section>
-  )
-
+    return (
+        <section className='App'>
+            {
+                user.map(user => {
+                    const { userName, name, formattedUserName, formatUserName, isFollowing, key } = user
+                    return (
+                        <TwitterFollowCard userName={userName} formattedUserName={formattedUserName} formatUserName={formatUserName} initialIsFollowing={isFollowing} key={key}>
+                            {name}
+                        </TwitterFollowCard>
+                    )
+                })
+            }
+        </section>
+    )
 }
