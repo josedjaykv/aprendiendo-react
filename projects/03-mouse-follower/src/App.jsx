@@ -29,7 +29,7 @@ const FoolowMouse = () => {
 
   // change body className
   useEffect(() => {
-    document.body.classList.toggle('no-cursor', enabled);
+    document.body.classList.toggle('no-cursor', enabled); 
 
     return () => {
       document.body.classList.remove('no-cursor');
