@@ -1,17 +1,19 @@
-import { useRef } from 'react'
+import { useState } from 'react'
 import './App.css'
 import { Movies } from './components/Movies'
 import { useMovies } from './hooks/useMovies'
 
 function App() {
   const { movies: mappedMovies } = useMovies()
+  const [query, setQuery] = useState('')
 
   function handleSubmit (event) {
     event.preventDefault();
-    const { movieName } = Object.fromEntries(
-      new window.FormData(event.target)
-    )
-    console.log(movieName);
+    console.log(query);
+  }
+
+  function handleChange (event) {
+    setQuery(event.target.value)
   }
 
   return (
@@ -20,7 +22,7 @@ function App() {
       <header>
         <h1>Buscador de películas</h1>
         <form className='form' action="form" onSubmit={handleSubmit}>
-          <input name='movieName' type="text" placeholder='Avengers, Avatar, Little Manhattan'/>
+          <input onChange={handleChange} value={query} name='query' type="text" placeholder='Avengers, Avatar, Little Manhattan'/>
           <button type='submit'>Buscar</button>
         </form>
       </header>
