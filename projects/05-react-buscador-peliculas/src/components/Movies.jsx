@@ -1,0 +1,31 @@
+import responseMovies from '../mocks/with-results.json'
+
+function ListOfMovies ({ movies }) {
+  return (
+    <ul>
+      {
+        movies.map(movie => (
+          <li key={movie.id}>
+            <h3>{movie.title}</h3>
+            <p>{movie.year}</p>
+            <img src={movie.poster} alt={movie.title} />
+          </li>
+        ))
+      }
+    </ul>
+  )
+}
+
+function NoMovieResult () {
+  return (
+    <p>No se encontraron películas para esta búsqueda</p>
+  )
+}
+
+export function Movies ({ movies }) {
+  const hasMovies = responseMovies.Response
+
+  return (    
+    hasMovies ? <ListOfMovies movies={movies} /> : <NoMovieResult />
+  )
+}

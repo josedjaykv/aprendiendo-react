@@ -1,32 +1,17 @@
+import { useRef } from 'react'
 import './App.css'
-import responseMovies from './mocks/with-results.json'
-import withoutResults from './mocks/no-results.json'
+import { Movies } from './components/Movies'
+import { useMovies } from './hooks/useMovies'
 
 function App() {
-  const movies = responseMovies.Search
-  const hasMovies = responseMovies.Response
-  console.log(hasMovies)
+  const { movies: mappedMovies } = useMovies()
 
-  const renderMovies = () => {
-    return (
-      <ul>
-        {
-          movies.map(movie => (
-            <li key={movie.imdbID}>
-              <h3>{movie.Title}</h3>
-              <p>{movie.Year}</p>
-              <img src={movie.Poster} alt={movie.Title} />
-            </li>
-          ))
-        }
-      </ul>
+  function handleSubmit (event) {
+    event.preventDefault();
+    const { movieName } = Object.fromEntries(
+      new window.FormData(event.target)
     )
-  }
-
-  const renderNoResult = () => {
-    return (
-      <p>No se encontraron películas para esta búsqueda</p>
-    )
+    console.log(movieName);
   }
 
   return (
@@ -34,16 +19,14 @@ function App() {
 
       <header>
         <h1>Buscador de películas</h1>
-        <form className='form' action="form">
-          <input type="text" placeholder='Avengers, Avatar, Little Manhattan'/>
+        <form className='form' action="form" onSubmit={handleSubmit}>
+          <input name='movieName' type="text" placeholder='Avengers, Avatar, Little Manhattan'/>
           <button type='submit'>Buscar</button>
         </form>
       </header>
 
       <main>
-        {
-          hasMovies ? renderMovies() : renderNoResult()
-        }
+        <Movies movies={mappedMovies} />
       </main>
 
     </div>
