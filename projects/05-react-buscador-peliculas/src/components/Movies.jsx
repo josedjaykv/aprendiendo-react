@@ -1,11 +1,9 @@
-import responseMovies from '../mocks/with-results.json'
-
 function ListOfMovies ({ movies }) {
   return (
-    <ul>
+    <ul className='movies'>
       {
-        movies.map(movie => (
-          <li key={movie.id}>
+        movies?.map(movie => (
+          <li className='movie' key={movie.id}>
             <h3>{movie.title}</h3>
             <p>{movie.year}</p>
             <img src={movie.poster} alt={movie.title} />
@@ -23,7 +21,7 @@ function NoMovieResult () {
 }
 
 export function Movies ({ movies }) {
-  const hasMovies = responseMovies.Response
+  const hasMovies = movies
 
   return (    
     hasMovies ? <ListOfMovies movies={movies} /> : <NoMovieResult />
