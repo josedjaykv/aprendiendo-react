@@ -1,44 +1,33 @@
-import { useState, useEffect, useRef } from 'react'
+import { useCallback, useState } from 'react'
 import './App.css'
 import { Movies } from './components/Movies' 
 import { useMovies } from './hooks/useMovies'
-
-function useSearch () {
-  const [search, updateSearch] = useState('')
-  const [error, setError] = useState(null)
-  const isFirstInput = useRef(true)
-
-  useEffect(() => {
-    if (isFirstInput.current) {
-      isFirstInput.current = search === ''
-      return
-    }
-
-    if (search === '') {
-      setError('Ingrese un título para buscar')
-      return
-    }
-
-    setError(null)
-  }, [search])
-
-  return { search, updateSearch, error }
-}
+import { useSearch } from './hooks/useSearch'
+import debounce from 'just-debounce-it'
 
 function App() {
   const [sort, setSort] = useState(false)
   const { search, updateSearch, error } = useSearch()
   const { movies, loading, getMovies } = useMovies({ search, sort })
 
+  const debounceGetMovies = useCallback(
+    debounce(search => {
+      console.log('search', search)
+      getMovies({ search })
+    }, 300)
+    , []
+  )
+
   function handleSubmit (event) {
     event.preventDefault();
-    getMovies()
+    getMovies({ search })
   }
 
   function handleChange (event) {
     const newQuery = event.target.value
     if (newQuery.startsWith(' ')) return
-    updateSearch(newQuery)    
+    updateSearch(newQuery)  
+    debounceGetMovies(newQuery)  
   }
 
   const handleSort = () => {

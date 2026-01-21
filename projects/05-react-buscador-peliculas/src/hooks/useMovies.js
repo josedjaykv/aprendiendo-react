@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useMemo, useCallback } from 'react'
 import { searchMovies } from '../services/movies'
 
 export function useMovies ({ search, sort }) {
@@ -8,7 +8,7 @@ export function useMovies ({ search, sort }) {
   const previousSearch = useRef(search)
   
  
-  const getMovies = async () => {
+  const getMovies = useCallback(async ({ search }) => {
     if (search === previousSearch.current) return
 
     try {
@@ -22,11 +22,12 @@ export function useMovies ({ search, sort }) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
-  const sortedMovies = sort ? [...movies].sort((a, b) => Number(a.year) - Number(b.year)) : movies
-
-  console.log('render', sortedMovies)
-
+  // Con useMemo le decimos: Calcula esto solo si cambia sort o movies. Esto evita recalcular lo mismo varias veces.
+  const sortedMovies = useMemo(() => {
+    return sort ? [...movies].sort((a, b) => Number(a.year) - Number(b.year)) : movies
+  }, [sort, movies]) 
+  
   return { movies: sortedMovies, loading, error, getMovies }
 }
